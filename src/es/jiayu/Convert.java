@@ -9,10 +9,8 @@ package es.jiayu;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,8 +24,8 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import javax.swing.JFileChooser;
-
-import com.sun.xml.internal.ws.org.objectweb.asm.Label;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -65,7 +63,7 @@ public class Convert extends javax.swing.JFrame {
 		jMenu2 = new javax.swing.JMenu();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setTitle("Conversor Jiayu 4.1.2 Jelly Bean");
+		setTitle("Conversor Jiayu 4.1.2 Jelly Bean v0.1");
 		setLocationByPlatform(true);
 
 		jButton1.setLabel("Seleccionar ROM Original");
@@ -105,6 +103,11 @@ public class Convert extends javax.swing.JFrame {
 
 		jButton3.setEnabled(false);
 		jButton3.setLabel("Crear ROM Completa");
+		jButton3.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				jButton3ActionPerformed(evt);
+			}
+		});
 
 		jButton4.setText("Salir");
 		jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -266,8 +269,11 @@ public class Convert extends javax.swing.JFrame {
 
 		pack();
 	}// </editor-fold>
-	//GEN-END:initComponents
+		//GEN-END:initComponents
 
+	private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+		JOptionPane.showMessageDialog(this, "EN DESARROLLO");
+	}
 	private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
 		this.dispose();
 	}
@@ -292,31 +298,32 @@ public class Convert extends javax.swing.JFrame {
 	private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
 		jLabel4.setText("PROCESO INICIADO");
 		try {
-			if(!new File("parcheG3").exists() || !new File("parcheG2").exists()){
+			if (!new File("parcheG3").exists()
+					|| !new File("parcheG2").exists()) {
 				jLabel4.setText("NO SE HAN ENCONTRADO LOS DIRECTORIOS CON LOS PARCHES");
-			}else{
+			} else {
 				String strZipFile = ROMOriginal;
 				File fSourceZip = new File(strZipFile);
-				boolean rom=false;
+				boolean rom = false;
 				/*
 				 * STEP 2 : Extract entries while creating required sub-directories
 				 */
 				ZipFile zipFile = new ZipFile(fSourceZip);
 				Enumeration e = zipFile.entries();
-	
+
 				while (e.hasMoreElements()) {
 					ZipEntry entry = (ZipEntry) e.nextElement();
 					//File destinationFilePath = new File(zipPath, entry.getName());
-	
+
 					// create directories if required.
 					//destinationFilePath.getParentFile().mkdirs();
-	
+
 					// if the entry is directory, leave it. Otherwise extract it.
 					if (entry.isDirectory()) {
 						continue;
 					} else {
 						//System.out.println("Extracting " + destinationFilePath);
-	
+
 						/*
 						 * Get the InputStream for current entry of the zip file using
 						 * 
@@ -327,7 +334,7 @@ public class Convert extends javax.swing.JFrame {
 							BufferedReader bis = new BufferedReader(
 									new InputStreamReader(
 											zipFile.getInputStream(entry)));
-							rom=true;
+							rom = true;
 							String buildprop = "";
 							try {
 								String tmp = bis.readLine();
@@ -335,7 +342,7 @@ public class Convert extends javax.swing.JFrame {
 									buildprop = buildprop + tmp + "\n";
 									tmp = bis.readLine();
 								}
-	
+
 								if (buildprop.toLowerCase().indexOf("g2") != -1) {
 									modeloSeleccionado = "G2";
 									try {
@@ -343,21 +350,24 @@ public class Convert extends javax.swing.JFrame {
 												"parcheG2/system/build.prop");
 										BufferedOutputStream bos = new BufferedOutputStream(
 												fos, 1024);
-										buildprop = buildprop.replaceAll("MT6620",
-												"MT6628");
-										buildprop = buildprop.replaceAll("_mt6620",
-												"_mt6628");
+										buildprop = buildprop.replaceAll(
+												"MT6620", "MT6628");
+										buildprop = buildprop.replaceAll(
+												"_mt6620", "_mt6628");
 										bos.write(buildprop.getBytes());
 										// flush the output stream and close it.
 										bos.flush();
 										bos.close();
 										new File("salida").mkdir();
-										if (new File("salida/Conversion"
-												+ (new File(ROMOriginal).getName()))
+										if (new File(
+												"salida/Conversion"
+														+ (new File(ROMOriginal)
+																.getName()))
 												.exists()) {
 											new File(
 													"salida/Conversion"
-															+ (new File(ROMOriginal)
+															+ (new File(
+																	ROMOriginal)
 																	.getName()))
 													.delete();
 										}
@@ -371,28 +381,32 @@ public class Convert extends javax.swing.JFrame {
 									} catch (Exception e2) {
 										jLabel4.setText("SE HA PRODUCIDO UN ERROR");
 									}
-								} else if (buildprop.toLowerCase().indexOf("g3") != -1) {
+								} else if (buildprop.toLowerCase()
+										.indexOf("g3") != -1) {
 									modeloSeleccionado = "G3";
 									try {
 										FileOutputStream fos = new FileOutputStream(
 												"parcheG3/system/build.prop");
 										BufferedOutputStream bos = new BufferedOutputStream(
 												fos, 1024);
-										buildprop = buildprop.replaceAll("MT6620",
-												"MT6628");
-										buildprop = buildprop.replaceAll("_mt6620",
-												"_mt6628");
+										buildprop = buildprop.replaceAll(
+												"MT6620", "MT6628");
+										buildprop = buildprop.replaceAll(
+												"_mt6620", "_mt6628");
 										bos.write(buildprop.getBytes());
 										// flush the output stream and close it.
 										bos.flush();
 										bos.close();
 										new File("salida").mkdir();
-										if (new File("salida/Conversion"
-												+ (new File(ROMOriginal).getName()))
+										if (new File(
+												"salida/Conversion"
+														+ (new File(ROMOriginal)
+																.getName()))
 												.exists()) {
 											new File(
 													"salida/Conversion"
-															+ (new File(ROMOriginal))
+															+ (new File(
+																	ROMOriginal))
 																	.getName())
 													.delete();
 										}
@@ -420,11 +434,11 @@ public class Convert extends javax.swing.JFrame {
 						}
 					}
 				}
-				if(!rom){
+				if (!rom) {
 					jLabel4.setText("EL FICHERO SELECCIONADO NO ES UNA ROM");
 				}
 			}
-			
+
 		} catch (Exception e) {
 			jLabel4.setText("SE HA PRODUCIDO UN ERROR");
 		}
@@ -454,6 +468,7 @@ public class Convert extends javax.swing.JFrame {
 		}
 
 		JFileChooser jfc = new JFileChooser(".");
+		jfc.setFileFilter(new ImageFileFilter());
 		jfc.setVisible(true);
 		jfc.showOpenDialog(getParent());
 		File selectedFile = jfc.getSelectedFile();
@@ -699,6 +714,23 @@ public class Convert extends javax.swing.JFrame {
 	private javax.swing.JMenuItem jMenuItem1;
 	private javax.swing.JMenuItem jMenuItem2;
 	private javax.swing.JSeparator jSeparator1;
-	// End of variables declaration//GEN-END:variables
 
+	// End of variables declaration//GEN-END:variables
+	public class ImageFileFilter extends FileFilter {
+		private final String[] okFileExtensions = new String[] { "zip" };
+
+		public boolean accept(File file) {
+			for (String extension : okFileExtensions) {
+				if (file.getName().toLowerCase().endsWith(extension)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public String getDescription() {
+			return "Archivos *.zip";
+		}
+	}
 }

@@ -42,7 +42,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Conversor Jiayu 4.1.2 Jelly Bean"/>
+    <Property name="title" type="java.lang.String" value="Conversor Jiayu 4.1.2 Jelly Bean v0.1"/>
     <Property name="locationByPlatform" type="boolean" value="true"/>
   </Properties>
   <SyntheticProperties>
@@ -189,6 +189,9 @@
         <Property name="enabled" type="boolean" value="false"/>
         <Property name="label" type="java.lang.String" value="Crear ROM Completa"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
     </Component>
