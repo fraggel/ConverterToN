@@ -1,0 +1,29 @@
+ui_print("----------------------------");
+ui_print("Instalando Parche Conversor por Fraggel    ");
+show_progress(0.950000, 50);
+mount("ext4", "EMMC", "/dev/block/mmcblk0p3", "/system");
+
+delete_recursive("/system/etc/firmware");
+delete_recursive("/system/lib/modules");
+
+package_extract_dir("system", "/system");
+
+set_perm_recursive(0, 0, 0755, 0644, "/system/etc/firmware");
+set_perm_recursive(0, 0, 0755, 0644, "/system/lib/modules");
+
+set_perm(0, 2000, 0755, "/system/xbin/libmnlp");
+
+symlink("wlan_mt6628.ko", "/system/lib/modules/wlan.ko");
+
+unmount("/system");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ================================");
+ui_print("|                                |");
+ui_print("|          Terminado             |");
+ui_print("|                                |");
+ui_print("|                                |");
+ui_print(" ================================");
+ui_print(" ");
+run_program("/sbin/sleep", "5");
+run_program("/sbin/reboot");
