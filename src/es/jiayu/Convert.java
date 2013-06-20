@@ -63,7 +63,7 @@ public class Convert extends javax.swing.JFrame {
 		jMenu2 = new javax.swing.JMenu();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setTitle("Conversor Jiayu 4.1.2 Jelly Bean v0.1");
+		setTitle("Conversor Jiayu 4.1.2 Jelly Bean v0.1.1");
 		setLocationByPlatform(true);
 
 		jButton1.setLabel("Seleccionar ROM Original");
@@ -471,6 +471,7 @@ public class Convert extends javax.swing.JFrame {
 		jfc.setFileFilter(new ImageFileFilter());
 		jfc.setVisible(true);
 		jfc.showOpenDialog(getParent());
+		
 		File selectedFile = jfc.getSelectedFile();
 		if (selectedFile != null) {
 			jLabel1.setText("Se ha seleccionado la ROM \""
@@ -718,10 +719,12 @@ public class Convert extends javax.swing.JFrame {
 	// End of variables declaration//GEN-END:variables
 	public class ImageFileFilter extends FileFilter {
 		private final String[] okFileExtensions = new String[] { "zip" };
-
+		
 		public boolean accept(File file) {
 			for (String extension : okFileExtensions) {
 				if (file.getName().toLowerCase().endsWith(extension)) {
+					return true;
+				}else if(file.isDirectory()){
 					return true;
 				}
 			}
